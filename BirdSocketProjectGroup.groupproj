@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{BEE4379A-537A-441A-9DF5-3E2F864F801A}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="src\BirdSocket.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="samples\Bird.Socket.Samples.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="BirdSocket">
+        <MSBuild Projects="src\BirdSocket.dproj"/>
+    </Target>
+    <Target Name="BirdSocket:Clean">
+        <MSBuild Projects="src\BirdSocket.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="BirdSocket:Make">
+        <MSBuild Projects="src\BirdSocket.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Bird_Socket_Samples">
+        <MSBuild Projects="samples\Bird.Socket.Samples.dproj"/>
+    </Target>
+    <Target Name="Bird_Socket_Samples:Clean">
+        <MSBuild Projects="samples\Bird.Socket.Samples.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Bird_Socket_Samples:Make">
+        <MSBuild Projects="samples\Bird.Socket.Samples.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="BirdSocket;Bird_Socket_Samples"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="BirdSocket:Clean;Bird_Socket_Samples:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="BirdSocket:Make;Bird_Socket_Samples:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

@@ -556,6 +556,16 @@ begin
               HandleException(Exception.Create('reserved non-control frames'));
               Continue;
             end
+            else if (LOperationCode = TOperationCode.PING.ToByte) then
+            begin
+              try
+                FInternalLock.Enter;
+                FSocket.Write(EncodeFrame(IndyTextEncoding_UTF8.GetString(LSpool), TOperationCode.PONG));
+              finally
+                FInternalLock.Leave;
+              end;
+              Continue;
+            end
             else if (LOperationCode > 11) then
             begin
               HandleException(Exception.Create('reserved control frames'));
@@ -591,18 +601,16 @@ begin
                 begin
                   try
                     FInternalLock.Enter;
-                    // or not response is fine
                     FSocket.Write(EncodeFrame(IndyTextEncoding_UTF8.GetString(LSpool), TOperationCode.PONG));
                   finally
                     FInternalLock.Leave;
                   end;
                 end
-                // close
                 else if (LOperationCode = TOperationCode.CONNECTION_CLOSE.ToByte) then
                 begin
                   if not FClosingEventLocalHandshake then
                     Self.Close;
-                  Break
+                  Break;
                 end
                 else
                 begin
